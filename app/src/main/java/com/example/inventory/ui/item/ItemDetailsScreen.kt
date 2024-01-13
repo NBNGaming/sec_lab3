@@ -55,6 +55,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.Item
+import com.example.inventory.data.Settings
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
@@ -147,7 +148,7 @@ private fun ItemDetailsBody(
             onClick = onShareItem,
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.small,
-            enabled = true
+            enabled = !Settings.disableSharing
         ) {
             Text("Share")
         }
@@ -231,6 +232,7 @@ fun ItemDetails(
             ItemDetailsRow(
                 labelResID = R.string.supplier_email,
                 itemDetail = item.email,
+                sensitive = true,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -241,6 +243,7 @@ fun ItemDetails(
             ItemDetailsRow(
                 labelResID = R.string.supplier_number,
                 itemDetail = item.number,
+                sensitive = true,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -255,12 +258,15 @@ fun ItemDetails(
 
 @Composable
 private fun ItemDetailsRow(
-    @StringRes labelResID: Int, itemDetail: String, modifier: Modifier = Modifier
+    @StringRes labelResID: Int, itemDetail: String, modifier: Modifier = Modifier, sensitive: Boolean = false,
 ) {
     Row(modifier = modifier) {
         Text(text = stringResource(labelResID))
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = itemDetail, fontWeight = FontWeight.Bold)
+        Text(
+            text = if (Settings.hideSensitiveData && sensitive) "*****" else itemDetail,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 

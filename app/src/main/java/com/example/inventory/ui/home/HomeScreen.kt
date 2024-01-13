@@ -57,6 +57,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.Item
+import com.example.inventory.data.Settings
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.item.formatedPrice
 import com.example.inventory.ui.navigation.NavigationDestination
@@ -216,12 +217,12 @@ private fun InventoryItem(
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = item.number,
+                    text = if (!Settings.hideSensitiveData) item.number else "*****",
                     style = MaterialTheme.typography.titleMedium
                 )
             }
             Text(
-                text = stringResource(R.string.supp_email, item.email),
+                text = stringResource(R.string.supp_email, if (!Settings.hideSensitiveData) item.email else "*****"),
                 style = MaterialTheme.typography.titleMedium
             )
         }
